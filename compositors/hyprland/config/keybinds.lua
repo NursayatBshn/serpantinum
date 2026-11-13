@@ -61,6 +61,8 @@ hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("serpantinum msg toggle calendar"))
 hl.bind("CTRL + " .. mainMod .. " + V", hl.dsp.exec_cmd("serpantinum msg toggle volume"))
 hl.bind(mainMod .. " + J", hl.dsp.exec_cmd("serpantinum msg bar autohide"))
 hl.bind("CTRL + " .. mainMod .. " + R", hl.dsp.exec_cmd("serpantinum reload"))
+hl.bind(mainMod .. " + Slash", hl.dsp.exec_cmd("serpantinum msg toggle cheatsheet"))
+hl.bind(mainMod .. " + question", hl.dsp.exec_cmd("serpantinum msg toggle cheatsheet"))
 
 -- Screenshots, OCR, Search, Record & Color picker (end-4)
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("/home/nursayat/.local/bin/end4-region screenshot"), { locked = true })

@@ -131,6 +131,15 @@ function getLayout(name, mx, my, mw, mh, userScale, barPosition) {
                 "right": { anchor: "left" } 
             } 
         },
+        "cheatsheet": { 
+            w: 980, h: 680, comp: "cheatsheet/CheatsheetPopup.qml", 
+            pos: { 
+                "top": { anchor: "center" }, 
+                "bottom": { anchor: "center" }, 
+                "left": { anchor: "center" }, 
+                "right": { anchor: "center" } 
+            } 
+        },
         "hidden": { 
             w: 1, h: 1, comp: "", 
             pos: { 
