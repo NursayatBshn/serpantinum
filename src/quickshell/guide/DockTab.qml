@@ -31,6 +31,27 @@ GuideTab {
         "visibleElements": 7,
         "hoverScale": 120,
         "cascadeScale": false,
+        "hoverBulge": true,
+        "hoverBulgeHeight": 12,
+        "hoverBulgeWidth": 140,
+        "hoverBulgeSmoothness": 18,
+        "hoverStretchEdges": true,
+        "hoverEffectMode": "parabolic",
+        "cascadeRadius": 2,
+        "hoverLift": 5,
+        "hoverSpread": 10,
+        "hoverAnimDuration": 220,
+        "hoverTilt": false,
+        "hoverGlow": false,
+        "launchBounce": true,
+        "dockPadding": 8,
+        "itemSpacing": 8,
+        "iconRadius": 28,
+        "dockCornerRadius": -1,
+        "dockOpacity": -1,
+        "showNotifBadges": true,
+        "notifBadgeStyle": "count",
+        "notifBadgeColor": "red",
         "focusRunning": true,
         "showRunningIndicators": true,
         "showRunningApps": true,
@@ -56,6 +77,27 @@ GuideTab {
     property bool currentOverrideBoundsCorrection: dockSettings && dockSettings.overrideBoundsCorrection !== undefined ? dockSettings.overrideBoundsCorrection : false
     property int currentHoverScale: (dockSettings && dockSettings.hoverScale !== undefined && !isNaN(parseInt(dockSettings.hoverScale))) ? parseInt(dockSettings.hoverScale) : 120
     property bool currentCascadeScale: dockSettings && dockSettings.cascadeScale !== undefined ? Boolean(dockSettings.cascadeScale) : false
+    property bool currentHoverBulge: dockSettings && dockSettings.hoverBulge !== undefined ? Boolean(dockSettings.hoverBulge) : true
+    property int currentHoverBulgeHeight: (dockSettings && dockSettings.hoverBulgeHeight !== undefined && !isNaN(parseInt(dockSettings.hoverBulgeHeight))) ? parseInt(dockSettings.hoverBulgeHeight) : 12
+    property int currentHoverBulgeWidth: (dockSettings && dockSettings.hoverBulgeWidth !== undefined && !isNaN(parseInt(dockSettings.hoverBulgeWidth))) ? parseInt(dockSettings.hoverBulgeWidth) : 140
+    property int currentHoverBulgeSmoothness: (dockSettings && dockSettings.hoverBulgeSmoothness !== undefined && !isNaN(parseInt(dockSettings.hoverBulgeSmoothness))) ? parseInt(dockSettings.hoverBulgeSmoothness) : 18
+    property bool currentHoverStretchEdges: dockSettings && dockSettings.hoverStretchEdges !== undefined ? Boolean(dockSettings.hoverStretchEdges) : true
+    property string currentHoverEffectMode: (dockSettings && dockSettings.hoverEffectMode) ? String(dockSettings.hoverEffectMode) : "parabolic"
+    property int currentCascadeRadius: (dockSettings && dockSettings.cascadeRadius !== undefined && !isNaN(parseInt(dockSettings.cascadeRadius))) ? parseInt(dockSettings.cascadeRadius) : 2
+    property int currentHoverLift: (dockSettings && dockSettings.hoverLift !== undefined && !isNaN(parseInt(dockSettings.hoverLift))) ? parseInt(dockSettings.hoverLift) : 5
+    property int currentHoverSpread: (dockSettings && dockSettings.hoverSpread !== undefined && !isNaN(parseInt(dockSettings.hoverSpread))) ? parseInt(dockSettings.hoverSpread) : 10
+    property int currentHoverAnimDuration: (dockSettings && dockSettings.hoverAnimDuration !== undefined && !isNaN(parseInt(dockSettings.hoverAnimDuration))) ? parseInt(dockSettings.hoverAnimDuration) : 220
+    property bool currentHoverTilt: dockSettings && dockSettings.hoverTilt !== undefined ? Boolean(dockSettings.hoverTilt) : false
+    property bool currentHoverGlow: dockSettings && dockSettings.hoverGlow !== undefined ? Boolean(dockSettings.hoverGlow) : false
+    property bool currentLaunchBounce: dockSettings && dockSettings.launchBounce !== undefined ? Boolean(dockSettings.launchBounce) : true
+    property int currentDockPadding: (dockSettings && dockSettings.dockPadding !== undefined && !isNaN(parseInt(dockSettings.dockPadding))) ? parseInt(dockSettings.dockPadding) : 8
+    property int currentItemSpacing: (dockSettings && dockSettings.itemSpacing !== undefined && !isNaN(parseInt(dockSettings.itemSpacing))) ? parseInt(dockSettings.itemSpacing) : 8
+    property int currentIconRadius: (dockSettings && dockSettings.iconRadius !== undefined && !isNaN(parseInt(dockSettings.iconRadius))) ? parseInt(dockSettings.iconRadius) : 28
+    property int currentDockCornerRadius: (dockSettings && dockSettings.dockCornerRadius !== undefined && !isNaN(parseInt(dockSettings.dockCornerRadius))) ? parseInt(dockSettings.dockCornerRadius) : -1
+    property int currentDockOpacity: (dockSettings && dockSettings.dockOpacity !== undefined && !isNaN(parseInt(dockSettings.dockOpacity))) ? parseInt(dockSettings.dockOpacity) : -1
+    property bool currentShowNotifBadges: dockSettings && dockSettings.showNotifBadges !== undefined ? Boolean(dockSettings.showNotifBadges) : true
+    property string currentNotifBadgeStyle: (dockSettings && dockSettings.notifBadgeStyle) ? String(dockSettings.notifBadgeStyle) : "count"
+    property string currentNotifBadgeColor: (dockSettings && dockSettings.notifBadgeColor) ? String(dockSettings.notifBadgeColor) : "red"
     property bool currentEnableScrolling: dockSettings && dockSettings.enableScrolling !== undefined ? dockSettings.enableScrolling : false
     property int currentVisibleElements: (dockSettings && dockSettings.visibleElements !== undefined && !isNaN(parseInt(dockSettings.visibleElements)) && parseInt(dockSettings.visibleElements) > 0) ? parseInt(dockSettings.visibleElements) : 7
     property bool currentSmartAutohide: dockSettings && dockSettings.smartAutohide !== undefined ? dockSettings.smartAutohide : true
@@ -83,6 +125,27 @@ GuideTab {
         dockTabRoot.currentOverrideBoundsCorrection = s.overrideBoundsCorrection !== undefined ? s.overrideBoundsCorrection : false;
         dockTabRoot.currentHoverScale = (s.hoverScale !== undefined && !isNaN(parseInt(s.hoverScale))) ? parseInt(s.hoverScale) : 120;
         dockTabRoot.currentCascadeScale = s.cascadeScale !== undefined ? Boolean(s.cascadeScale) : false;
+        dockTabRoot.currentHoverBulge = s.hoverBulge !== undefined ? Boolean(s.hoverBulge) : true;
+        dockTabRoot.currentHoverBulgeHeight = (s.hoverBulgeHeight !== undefined && !isNaN(parseInt(s.hoverBulgeHeight))) ? parseInt(s.hoverBulgeHeight) : 12;
+        dockTabRoot.currentHoverBulgeWidth = (s.hoverBulgeWidth !== undefined && !isNaN(parseInt(s.hoverBulgeWidth))) ? parseInt(s.hoverBulgeWidth) : 140;
+        dockTabRoot.currentHoverBulgeSmoothness = (s.hoverBulgeSmoothness !== undefined && !isNaN(parseInt(s.hoverBulgeSmoothness))) ? parseInt(s.hoverBulgeSmoothness) : 18;
+        dockTabRoot.currentHoverStretchEdges = s.hoverStretchEdges !== undefined ? Boolean(s.hoverStretchEdges) : true;
+        dockTabRoot.currentHoverEffectMode = (s.hoverEffectMode) ? String(s.hoverEffectMode) : "parabolic";
+        dockTabRoot.currentCascadeRadius = (s.cascadeRadius !== undefined && !isNaN(parseInt(s.cascadeRadius))) ? parseInt(s.cascadeRadius) : 2;
+        dockTabRoot.currentHoverLift = (s.hoverLift !== undefined && !isNaN(parseInt(s.hoverLift))) ? parseInt(s.hoverLift) : 5;
+        dockTabRoot.currentHoverSpread = (s.hoverSpread !== undefined && !isNaN(parseInt(s.hoverSpread))) ? parseInt(s.hoverSpread) : 10;
+        dockTabRoot.currentHoverAnimDuration = (s.hoverAnimDuration !== undefined && !isNaN(parseInt(s.hoverAnimDuration))) ? parseInt(s.hoverAnimDuration) : 220;
+        dockTabRoot.currentHoverTilt = s.hoverTilt !== undefined ? Boolean(s.hoverTilt) : false;
+        dockTabRoot.currentHoverGlow = s.hoverGlow !== undefined ? Boolean(s.hoverGlow) : false;
+        dockTabRoot.currentLaunchBounce = s.launchBounce !== undefined ? Boolean(s.launchBounce) : true;
+        dockTabRoot.currentDockPadding = (s.dockPadding !== undefined && !isNaN(parseInt(s.dockPadding))) ? parseInt(s.dockPadding) : 8;
+        dockTabRoot.currentItemSpacing = (s.itemSpacing !== undefined && !isNaN(parseInt(s.itemSpacing))) ? parseInt(s.itemSpacing) : 8;
+        dockTabRoot.currentIconRadius = (s.iconRadius !== undefined && !isNaN(parseInt(s.iconRadius))) ? parseInt(s.iconRadius) : 28;
+        dockTabRoot.currentDockCornerRadius = (s.dockCornerRadius !== undefined && !isNaN(parseInt(s.dockCornerRadius))) ? parseInt(s.dockCornerRadius) : -1;
+        dockTabRoot.currentDockOpacity = (s.dockOpacity !== undefined && !isNaN(parseInt(s.dockOpacity))) ? parseInt(s.dockOpacity) : -1;
+        dockTabRoot.currentShowNotifBadges = s.showNotifBadges !== undefined ? Boolean(s.showNotifBadges) : true;
+        dockTabRoot.currentNotifBadgeStyle = s.notifBadgeStyle ? String(s.notifBadgeStyle) : "count";
+        dockTabRoot.currentNotifBadgeColor = s.notifBadgeColor ? String(s.notifBadgeColor) : "red";
         dockTabRoot.currentEnableScrolling = s.enableScrolling !== undefined ? s.enableScrolling : false;
         dockTabRoot.currentVisibleElements = (s.visibleElements !== undefined && !isNaN(parseInt(s.visibleElements)) && parseInt(dockSettings.visibleElements) > 0) ? parseInt(s.visibleElements) : 7;
         dockTabRoot.currentSmartAutohide = s.smartAutohide !== undefined ? s.smartAutohide : true;
@@ -979,6 +1042,745 @@ GuideTab {
                             }
                         }
                     }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverBulgeRow.tempVisible
+                        row: hoverBulgeRow
+
+                        RevealableSettingsRow {
+                            id: hoverBulgeRow
+                            settingId: "dock_hover_bulge"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰘖"
+                            title: "Выпуклость фона при наведении"
+                            description: "Плавный купол над увеличенной иконкой и соседями"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentHoverBulge
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface1
+                                handleColor: ThemeBackend.crust
+                                handleOffColor: ThemeBackend.text
+                                onToggled: function(val) {
+                                    dockTabRoot.currentHoverBulge = val;
+                                    dockTabRoot.updateDockSetting("hoverBulge", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentHoverBulge) || hoverBulgeHeightRow.tempVisible
+                        row: hoverBulgeHeightRow
+
+                        RevealableSettingsRow {
+                            id: hoverBulgeHeightRow
+                            settingId: "dock_hover_bulge_height"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰹹"
+                            title: "Высота выпуклости"
+                            description: "Дополнительный выступ купола над иконкой"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentHoverBulge
+
+                            Draggable {
+                                id: hoverBulgeHeightSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 0
+                                to: 36
+                                stepSize: 1
+                                defaultValue: 12
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentHoverBulgeHeight
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverBulgeHeight !== rounded) {
+                                        dockTabRoot.currentHoverBulgeHeight = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverBulgeHeight", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverBulgeHeight", Math.round(hoverBulgeHeightSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentHoverBulge) || hoverBulgeWidthRow.tempVisible
+                        row: hoverBulgeWidthRow
+
+                        RevealableSettingsRow {
+                            id: hoverBulgeWidthRow
+                            settingId: "dock_hover_bulge_width"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰹺"
+                            title: "Ширина выпуклости"
+                            description: "Охват купола для соседних увеличенных иконок"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentHoverBulge
+
+                            Draggable {
+                                id: hoverBulgeWidthSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 60
+                                to: 260
+                                stepSize: 4
+                                defaultValue: 140
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentHoverBulgeWidth
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverBulgeWidth !== rounded) {
+                                        dockTabRoot.currentHoverBulgeWidth = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverBulgeWidth", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverBulgeWidth", Math.round(hoverBulgeWidthSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentHoverBulge) || hoverBulgeSmoothRow.tempVisible
+                        row: hoverBulgeSmoothRow
+
+                        RevealableSettingsRow {
+                            id: hoverBulgeSmoothRow
+                            settingId: "dock_hover_bulge_smoothness"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰕠"
+                            title: "Мягкость перехода выпуклости"
+                            description: "Радиус плавного перетекания купола в панель дока"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentHoverBulge
+
+                            Draggable {
+                                id: hoverBulgeSmoothSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 4
+                                to: 36
+                                stepSize: 1
+                                defaultValue: 18
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentHoverBulgeSmoothness
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverBulgeSmoothness !== rounded) {
+                                        dockTabRoot.currentHoverBulgeSmoothness = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverBulgeSmoothness", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverBulgeSmoothness", Math.round(hoverBulgeSmoothSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverStretchEdgesRow.tempVisible
+                        row: hoverStretchEdgesRow
+
+                        RevealableSettingsRow {
+                            id: hoverStretchEdgesRow
+                            settingId: "dock_hover_stretch_edges"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰩨"
+                            title: "Растягивать края при наведении"
+                            description: "Расширяет док по краям под сдвиг и масштаб соседних иконок"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentHoverStretchEdges
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface1
+                                handleColor: ThemeBackend.crust
+                                handleOffColor: ThemeBackend.text
+                                onToggled: function(val) {
+                                    dockTabRoot.currentHoverStretchEdges = val;
+                                    dockTabRoot.updateDockSetting("hoverStretchEdges", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverEffectModeRow.tempVisible
+                        row: hoverEffectModeRow
+
+                        RevealableSettingsRow {
+                            id: hoverEffectModeRow
+                            settingId: "dock_hover_effect_mode"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰔎"
+                            title: "Стиль эффекта наведения"
+                            description: "Кривая увеличения и анимации (macOS / Latte / Spring / Flat)"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Dropdown {
+                                id: hoverEffectDropdown
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(180)
+                                implicitHeight: dockTabRoot.rootObj.s(32)
+                                options: ["Парабола (macOS)", "Волна (Latte)", "Пружина (Spring)", "Без зума (Flat)"]
+                                currentIndex: {
+                                    if (dockTabRoot.currentHoverEffectMode === "wave") return 1;
+                                    if (dockTabRoot.currentHoverEffectMode === "spring") return 2;
+                                    if (dockTabRoot.currentHoverEffectMode === "flat") return 3;
+                                    return 0;
+                                }
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface0
+                                onSelected: function(idx) {
+                                    let mode = "parabolic";
+                                    if (idx === 1) mode = "wave";
+                                    else if (idx === 2) mode = "spring";
+                                    else if (idx === 3) mode = "flat";
+                                    dockTabRoot.currentHoverEffectMode = mode;
+                                    dockTabRoot.updateDockSetting("hoverEffectMode", mode);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentCascadeScale) || cascadeRadiusRow.tempVisible
+                        row: cascadeRadiusRow
+
+                        RevealableSettingsRow {
+                            id: cascadeRadiusRow
+                            settingId: "dock_cascade_radius"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰃀"
+                            title: "Радиус волны соседей"
+                            description: "Сколько соседних иконок с каждой стороны реагируют на курсор"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentCascadeScale
+
+                            Draggable {
+                                id: cascadeRadiusSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 1
+                                to: 5
+                                stepSize: 1
+                                defaultValue: 2
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " икон." }
+                                value: dockTabRoot.currentCascadeRadius
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentCascadeRadius !== rounded) {
+                                        dockTabRoot.currentCascadeRadius = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("cascadeRadius", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("cascadeRadius", Math.round(cascadeRadiusSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverLiftRow.tempVisible
+                        row: hoverLiftRow
+
+                        RevealableSettingsRow {
+                            id: hoverLiftRow
+                            settingId: "dock_hover_lift"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰁝"
+                            title: "Подъём иконки при наведении"
+                            description: "Смещение иконки от края экрана вверх"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Draggable {
+                                id: hoverLiftSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 0
+                                to: 20
+                                stepSize: 1
+                                defaultValue: 5
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentHoverLift
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverLift !== rounded) {
+                                        dockTabRoot.currentHoverLift = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverLift", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverLift", Math.round(hoverLiftSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverSpreadRow.tempVisible
+                        row: hoverSpreadRow
+
+                        RevealableSettingsRow {
+                            id: hoverSpreadRow
+                            settingId: "dock_hover_spread"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰁌"
+                            title: "Разлёт соседних иконок"
+                            description: "Насколько сильно соседние иконки расступаются в стороны"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Draggable {
+                                id: hoverSpreadSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 0
+                                to: 20
+                                stepSize: 1
+                                defaultValue: 10
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentHoverSpread
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverSpread !== rounded) {
+                                        dockTabRoot.currentHoverSpread = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverSpread", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverSpread", Math.round(hoverSpreadSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverAnimDurRow.tempVisible
+                        row: hoverAnimDurRow
+
+                        RevealableSettingsRow {
+                            id: hoverAnimDurRow
+                            settingId: "dock_hover_anim_duration"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰓅"
+                            title: "Скорость анимации дока"
+                            description: "Длительность реакции иконок и выпуклости"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Draggable {
+                                id: hoverAnimDurSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 80
+                                to: 450
+                                stepSize: 10
+                                defaultValue: 220
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " ms" }
+                                value: dockTabRoot.currentHoverAnimDuration
+                                backgroundColor: ThemeBackend.surface0
+                                accentColor: ThemeBackend.mauve
+                                handleColor: ThemeBackend.text
+                                handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let rounded = Math.round(val);
+                                    if (dockTabRoot.currentHoverAnimDuration !== rounded) {
+                                        dockTabRoot.currentHoverAnimDuration = rounded;
+                                        dockTabRoot.triggerDebounced(function() {
+                                            dockTabRoot.updateDockSetting("hoverAnimDuration", rounded);
+                                        });
+                                    }
+                                }
+                                onDragFinished: {
+                                    dockDebounceTimer.stop();
+                                    dockTabRoot.updateDockSetting("hoverAnimDuration", Math.round(hoverAnimDurSlider.value));
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverTiltRow.tempVisible
+                        row: hoverTiltRow
+
+                        RevealableSettingsRow {
+                            id: hoverTiltRow
+                            settingId: "dock_hover_tilt"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰑵"
+                            title: "Наклон соседних иконок"
+                            description: "Лёгкий 3D-наклон иконок в стороны от курсора"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentHoverTilt
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface1
+                                handleColor: ThemeBackend.crust
+                                handleOffColor: ThemeBackend.text
+                                onToggled: function(val) {
+                                    dockTabRoot.currentHoverTilt = val;
+                                    dockTabRoot.updateDockSetting("hoverTilt", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || hoverGlowRow.tempVisible
+                        row: hoverGlowRow
+
+                        RevealableSettingsRow {
+                            id: hoverGlowRow
+                            settingId: "dock_hover_glow"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰌶"
+                            title: "Свечение иконки при наведении"
+                            description: "Мягкая акцентная подсветка под активной иконкой"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentHoverGlow
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface1
+                                handleColor: ThemeBackend.crust
+                                handleOffColor: ThemeBackend.text
+                                onToggled: function(val) {
+                                    dockTabRoot.currentHoverGlow = val;
+                                    dockTabRoot.updateDockSetting("hoverGlow", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || launchBounceRow.tempVisible
+                        row: launchBounceRow
+
+                        RevealableSettingsRow {
+                            id: launchBounceRow
+                            settingId: "dock_launch_bounce"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰜷"
+                            title: "Прыжок при запуске (Bounce)"
+                            description: "Подпрыгивание иконки при клике для запуска приложения"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentLaunchBounce
+                                accentColor: ThemeBackend.mauve
+                                baseColor: ThemeBackend.surface1
+                                handleColor: ThemeBackend.crust
+                                handleOffColor: ThemeBackend.text
+                                onToggled: function(val) {
+                                    dockTabRoot.currentLaunchBounce = val;
+                                    dockTabRoot.updateDockSetting("launchBounce", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || dockPaddingRow.tempVisible
+                        row: dockPaddingRow
+                        RevealableSettingsRow {
+                            id: dockPaddingRow
+                            settingId: "dock_padding"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰆟"
+                            title: "Отступы внутри дока (Padding)"
+                            description: "Внутренние поля фона вокруг иконок"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Draggable {
+                                id: dockPaddingSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 2; to: 24; stepSize: 1; defaultValue: 8
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentDockPadding
+                                backgroundColor: ThemeBackend.surface0; accentColor: ThemeBackend.mauve; handleColor: ThemeBackend.text; handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let r = Math.round(val);
+                                    if (dockTabRoot.currentDockPadding !== r) {
+                                        dockTabRoot.currentDockPadding = r;
+                                        dockTabRoot.triggerDebounced(function() { dockTabRoot.updateDockSetting("dockPadding", r); });
+                                    }
+                                }
+                                onDragFinished: { dockDebounceTimer.stop(); dockTabRoot.updateDockSetting("dockPadding", Math.round(dockPaddingSlider.value)); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || itemSpacingRow.tempVisible
+                        row: itemSpacingRow
+                        RevealableSettingsRow {
+                            id: itemSpacingRow
+                            settingId: "dock_item_spacing"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰹷"
+                            title: "Интервал между иконками"
+                            description: "Расстояние между элементами дока"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Draggable {
+                                id: itemSpacingSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 0; to: 24; stepSize: 1; defaultValue: 8
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + " px" }
+                                value: dockTabRoot.currentItemSpacing
+                                backgroundColor: ThemeBackend.surface0; accentColor: ThemeBackend.mauve; handleColor: ThemeBackend.text; handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let r = Math.round(val);
+                                    if (dockTabRoot.currentItemSpacing !== r) {
+                                        dockTabRoot.currentItemSpacing = r;
+                                        dockTabRoot.triggerDebounced(function() { dockTabRoot.updateDockSetting("itemSpacing", r); });
+                                    }
+                                }
+                                onDragFinished: { dockDebounceTimer.stop(); dockTabRoot.updateDockSetting("itemSpacing", Math.round(itemSpacingSlider.value)); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || iconRadiusRow.tempVisible
+                        row: iconRadiusRow
+                        RevealableSettingsRow {
+                            id: iconRadiusRow
+                            settingId: "dock_icon_radius"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰗘"
+                            title: "Скругление плиток иконок"
+                            description: "0% — квадрат, 28% — стандарт, 50% — круг"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Draggable {
+                                id: iconRadiusSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: 0; to: 50; stepSize: 1; defaultValue: 28
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) + "%" }
+                                value: dockTabRoot.currentIconRadius
+                                backgroundColor: ThemeBackend.surface0; accentColor: ThemeBackend.mauve; handleColor: ThemeBackend.text; handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let r = Math.round(val);
+                                    if (dockTabRoot.currentIconRadius !== r) {
+                                        dockTabRoot.currentIconRadius = r;
+                                        dockTabRoot.triggerDebounced(function() { dockTabRoot.updateDockSetting("iconRadius", r); });
+                                    }
+                                }
+                                onDragFinished: { dockDebounceTimer.stop(); dockTabRoot.updateDockSetting("iconRadius", Math.round(iconRadiusSlider.value)); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || dockCornerRadiusRow.tempVisible
+                        row: dockCornerRadiusRow
+                        RevealableSettingsRow {
+                            id: dockCornerRadiusRow
+                            settingId: "dock_corner_radius"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰗙"
+                            title: "Скругление углов дока"
+                            description: "-1 = авто из темы, 0–40 px — вручную"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Draggable {
+                                id: dockCornerRadiusSlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: -1; to: 40; stepSize: 1; defaultValue: -1
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) < 0 ? "Авто" : (Math.round(v) + " px") }
+                                value: dockTabRoot.currentDockCornerRadius
+                                backgroundColor: ThemeBackend.surface0; accentColor: ThemeBackend.mauve; handleColor: ThemeBackend.text; handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let r = Math.round(val);
+                                    if (dockTabRoot.currentDockCornerRadius !== r) {
+                                        dockTabRoot.currentDockCornerRadius = r;
+                                        dockTabRoot.triggerDebounced(function() { dockTabRoot.updateDockSetting("dockCornerRadius", r); });
+                                    }
+                                }
+                                onDragFinished: { dockDebounceTimer.stop(); dockTabRoot.updateDockSetting("dockCornerRadius", Math.round(dockCornerRadiusSlider.value)); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || dockOpacityRow.tempVisible
+                        row: dockOpacityRow
+                        RevealableSettingsRow {
+                            id: dockOpacityRow
+                            settingId: "dock_opacity"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰂵"
+                            title: "Прозрачность фона дока"
+                            description: "-1 = авто из темы, 0–100% — вручную"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Draggable {
+                                id: dockOpacitySlider
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(220)
+                                implicitHeight: dockTabRoot.rootObj.s(18)
+                                from: -1; to: 100; stepSize: 2; defaultValue: -1
+                                showValueBubble: true
+                                valueFormatter: function(v) { return Math.round(v) < 0 ? "Авто" : (Math.round(v) + "%") }
+                                value: dockTabRoot.currentDockOpacity
+                                backgroundColor: ThemeBackend.surface0; accentColor: ThemeBackend.mauve; handleColor: ThemeBackend.text; handleBorderColor: ThemeBackend.mantle
+                                onMoved: function(val) {
+                                    let r = Math.round(val);
+                                    if (dockTabRoot.currentDockOpacity !== r) {
+                                        dockTabRoot.currentDockOpacity = r;
+                                        dockTabRoot.triggerDebounced(function() { dockTabRoot.updateDockSetting("dockOpacity", r); });
+                                    }
+                                }
+                                onDragFinished: { dockDebounceTimer.stop(); dockTabRoot.updateDockSetting("dockOpacity", Math.round(dockOpacitySlider.value)); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: dockTabRoot.currentEnabled || showNotifBadgesRow.tempVisible
+                        row: showNotifBadgesRow
+                        RevealableSettingsRow {
+                            id: showNotifBadgesRow
+                            settingId: "dock_notif_badges"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰂚"
+                            title: "Бейджи уведомлений на иконках"
+                            description: "Счётчик непрочитанных уведомлений для приложений"
+                            revealWhenClosed: !dockTabRoot.currentEnabled
+                            Toggle {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                checked: dockTabRoot.currentShowNotifBadges
+                                accentColor: ThemeBackend.mauve; baseColor: ThemeBackend.surface1; handleColor: ThemeBackend.crust; handleOffColor: ThemeBackend.text
+                                onToggled: function(val) { dockTabRoot.currentShowNotifBadges = val; dockTabRoot.updateDockSetting("showNotifBadges", val); }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentShowNotifBadges) || notifBadgeStyleRow.tempVisible
+                        row: notifBadgeStyleRow
+                        RevealableSettingsRow {
+                            id: notifBadgeStyleRow
+                            settingId: "dock_notif_badge_style"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰎠"
+                            title: "Вид бейджа уведомлений"
+                            description: "Число непрочитанных или компактная точка"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentShowNotifBadges
+                            Dropdown {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(180); implicitHeight: dockTabRoot.rootObj.s(32)
+                                options: ["Счётчик (1, 2...)", "Точка"]
+                                currentIndex: dockTabRoot.currentNotifBadgeStyle === "dot" ? 1 : 0
+                                accentColor: ThemeBackend.mauve; baseColor: ThemeBackend.surface0
+                                onSelected: function(idx) {
+                                    let val = idx === 1 ? "dot" : "count";
+                                    dockTabRoot.currentNotifBadgeStyle = val;
+                                    dockTabRoot.updateDockSetting("notifBadgeStyle", val);
+                                }
+                            }
+                        }
+                    }
+
+                    CollapsibleSection {
+                        open: (dockTabRoot.currentEnabled && dockTabRoot.currentShowNotifBadges) || notifBadgeColorRow.tempVisible
+                        row: notifBadgeColorRow
+                        RevealableSettingsRow {
+                            id: notifBadgeColorRow
+                            settingId: "dock_notif_badge_color"
+                            rootObj: dockTabRoot.rootObj
+                            icon: "󰏘"
+                            title: "Цвет бейджа уведомлений"
+                            description: "Красный (классический) или акцентный цвет темы"
+                            revealWhenClosed: !dockTabRoot.currentEnabled || !dockTabRoot.currentShowNotifBadges
+                            Dropdown {
+                                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                                implicitWidth: dockTabRoot.rootObj.s(180); implicitHeight: dockTabRoot.rootObj.s(32)
+                                options: ["Красный", "Акцент темы"]
+                                currentIndex: dockTabRoot.currentNotifBadgeColor === "accent" ? 1 : 0
+                                accentColor: ThemeBackend.mauve; baseColor: ThemeBackend.surface0
+                                onSelected: function(idx) {
+                                    let val = idx === 1 ? "accent" : "red";
+                                    dockTabRoot.currentNotifBadgeColor = val;
+                                    dockTabRoot.updateDockSetting("notifBadgeColor", val);
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
 

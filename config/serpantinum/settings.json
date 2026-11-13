@@ -1,10 +1,31 @@
 {
   "general": {
     "language": "en",
-    "avatarPath": "",
+    "avatarPath": "/home/nursayat/Pictures/Wallpapers/ddg_1776280415303827002.jpg",
     "muteSfx": false,
-    "weatherInterval": 30,
-    "weatherUnit": "metric"
+    "weatherInterval": 15,
+    "weatherUnit": "metric",
+    "location": {
+      "ip": "95.82.67.248",
+      "latitude": 51.1801,
+      "longitude": 71.44598,
+      "city": "Astana",
+      "region": "Astana",
+      "region_code": "71",
+      "country_name": "Kazakhstan",
+      "country_code": "KZ",
+      "postal": null,
+      "timezone": "Asia/Almaty",
+      "utc_offset": "+0500",
+      "currency": "KZT",
+      "languages": "kk,ru",
+      "asn": "AS206026",
+      "org": "Kar-Tel LLC",
+      "source": "ipapi.co",
+      "updated_at": 1794424457
+    },
+    "sfxVolume": 100,
+    "quickactions": true
   },
   "syspanel": {
     "clipExpandProgress": 0,
@@ -16,7 +37,7 @@
     "width": 100,
     "height": 40,
     "opacity": 100,
-    "style": "fill", 
+    "style": "modular",
     "time": {
       "format": "HH:mm:ss"
     },
@@ -26,16 +47,17 @@
       "left": [
         "left",
         "workspaces",
-        "media" 
+        "sysmon"
       ],
-     "center": [
+      "center": [
         [
           "timedate",
-          "info",
+          "media",
           "weather"
         ]
-      ],      
-     "right": [
+      ],
+      "right": [
+        "info",
         "tray",
         [
           "kb",
@@ -45,14 +67,99 @@
           "bat"
         ]
       ]
+    },
+    "distinctPills": false,
+    "centerByEdges": true,
+    "groupColors": {
+      "g_timedate": "#9accfa",
+      "g_kb": "#4f4061"
+    },
+    "menuItems": [
+      "settings",
+      "launcher",
+      "shuffle"
+    ],
+    "menuStyle": "icon",
+    "workspacesStyle": "pacman",
+    "timeShowDate": true,
+    "timeStyle": "material",
+    "visBarCount": 16,
+    "visAlignment": "center",
+    "visContinuous": false,
+    "sysmonStyle": "wave",
+    "sysmonStats": [
+      "cpu",
+      "ram",
+      "temp",
+      "disk"
+    ],
+    "batShowPercent": true,
+    "batShowIcon": true,
+    "batStyle": "button",
+    "wifiShowIcon": true,
+    "wifiShowName": true,
+    "wifiStyle": "text",
+    "btShowName": true,
+    "btStyle": "text",
+    "volStyle": "button",
+    "volShowIcon": true,
+    "kbShowIcon": true,
+    "kbStyle": "text",
+    "mediaInfoMode": "author",
+    "mediaWidth": 150,
+    "mediaHideWhenIdle": true,
+    "volShowPercent": true,
+    "hideEmptyWorkspaces": true,
+    "workspaces": {
+      "perMonitorNumbering": false,
+      "monitors": {
+        "eDP-1": {
+          "first": 1,
+          "count": 10
+        }
+      }
     }
   },
   "theme": {
-    "fontFamily": "Adwaita Mono",
-    "borderRadius": 10,
+    "fontFamily": "JetBrains Mono SemiBold",
+    "borderRadius": 16,
     "activePreset": "Matugen",
     "matugen": true,
-    "mode": "dark"
+    "mode": "dark",
+    "colors": {
+      "base": "#2d2b55",
+      "blue": "#69c52b",
+      "crust": "#181733",
+      "green": "#a5ff90",
+      "mantle": "#222044",
+      "maroon": "#ff628c",
+      "mauve": "#fad000",
+      "overlay0": "#8077cf",
+      "overlay1": "#9b93df",
+      "overlay2": "#b5aff0",
+      "peach": "#ff9d00",
+      "pink": "#ff628c",
+      "red": "#ff628c",
+      "sapphire": "#00e5ff",
+      "subtext0": "#a599e9",
+      "subtext1": "#c5bbf2",
+      "surface0": "#3b376d",
+      "surface1": "#4c468a",
+      "surface2": "#5e57aa",
+      "teal": "#00e5ff",
+      "text": "#ffffff",
+      "yellow": "#ffe600"
+    },
+    "blurBackground": true,
+    "blurStyle": "blur",
+    "elementOpacity": 38,
+    "apps": [
+      "cava",
+      "gtk",
+      "kitty",
+      "qt",
+      "wofi"
+    ]
   },
   "idle": {
     "enabled": true,
@@ -97,13 +204,18 @@
         "resumeCommand": "",
         "isCustom": false
       }
-    }
+    },
+    "manualInhibit": false,
+    "caffeineStartTime": 0,
+    "caffeineEndTime": 0
   },
   "notifications": {
     "dnd": true,
     "position": "top right",
     "sound": true,
-    "soundFile": ""
+    "soundFile": "/home/nursayat/.local/share/serpantinum/src/assets/sounds/notifications/Botanica.wav",
+    "horizontalPosition": 97,
+    "verticalPosition": 9
   },
   "display": {
     "monitors": {
@@ -117,7 +229,7 @@
     "enabled": true,
     "position": "bottom",
     "onTop": true,
-    "elementSize": 44,
+    "elementSize": 50,
     "floating": false,
     "background": true,
     "exclusive": false,
@@ -127,29 +239,166 @@
     "editing": false,
     "apps": [
       {
-        "name": "Kitty",
+        "name": "kitty",
         "comment": "Fast, feature-rich, GPU based terminal",
         "desktop_id": "kitty",
         "icon": "kitty"
       },
       {
-        "name": "Files",
-        "comment": "Access and organize files",
-        "desktop_id": "ski",
-        "icon": "ski"
+        "name": "Dolphin",
+        "comment": "Manage your files",
+        "desktop_id": "org.kde.dolphin",
+        "icon": "org.kde.dolphin"
+      },
+      {
+        "name": "Firefox",
+        "comment": "Fast and private browser",
+        "desktop_id": "firefox",
+        "icon": "firefox"
+      },
+      {
+        "name": "Google Chrome",
+        "comment": "Access the Internet",
+        "desktop_id": "google-chrome",
+        "icon": "google-chrome"
+      },
+      {
+        "name": "VSCodium",
+        "comment": "Code Editing. Redefined.",
+        "desktop_id": "codium",
+        "icon": "vscodium"
+      },
+      {
+        "name": "Telegram",
+        "comment": "New era of messaging",
+        "desktop_id": "org.telegram.desktop",
+        "icon": "org.telegram.desktop"
+      },
+      {
+        "name": "Liner",
+        "comment": "Liner Music Player",
+        "desktop_id": "liner.desktop",
+        "icon": "/home/nursayat/.local/share/icons/liner.png"
+      },
+      {
+        "name": "WPS Office",
+        "comment": "Use WPS Writer to office work.",
+        "desktop_id": "wps-office-prometheus",
+        "icon": "wps-office2023-kprometheus"
+      },
+      {
+        "name": "Sober",
+        "comment": "Play, chat & explore on Roblox",
+        "desktop_id": "org.vinegarhq.Sober",
+        "icon": "org.vinegarhq.Sober"
+      },
+      {
+        "name": "Prism Launcher",
+        "comment": "Discover, manage, and play Minecraft instances",
+        "desktop_id": "org.prismlauncher.PrismLauncher",
+        "icon": "org.prismlauncher.PrismLauncher"
+      },
+      {
+        "name": "Antigravity",
+        "comment": "Antigravity - Agentic Desktop Application",
+        "desktop_id": "antigravity",
+        "icon": "antigravity"
       }
     ],
-    "overrideBoundsCorrection": false,
+    "overrideBoundsCorrection": true,
     "enableScrolling": false,
     "visibleElements": 7,
     "scrollingElements": 7,
     "maxVisibleElements": 7,
     "maxElements": 7,
-    "hoverScale": 120,
-    "cascadeScale": false,
+    "hoverScale": 128,
+    "cascadeScale": true,
     "focusRunning": true,
     "showRunningIndicators": true,
-    "showRunningApps": false,
-    "runningScope": "auto"
+    "showRunningApps": true,
+    "runningScope": "auto",
+    "hoverBulge": true,
+    "hoverBulgeHeight": 12,
+    "hoverBulgeWidth": 176,
+    "hoverBulgeSmoothness": 36,
+    "hoverStretchEdges": true,
+    "hoverEffectMode": "wave",
+    "cascadeRadius": 2,
+    "hoverLift": 8,
+    "hoverSpread": 20,
+    "hoverAnimDuration": 200,
+    "hoverTilt": true,
+    "hoverGlow": false,
+    "launchBounce": true,
+    "dockPadding": 8,
+    "itemSpacing": 10,
+    "iconRadius": 28,
+    "dockCornerRadius": 40,
+    "dockOpacity": 32,
+    "showNotifBadges": true,
+    "notifBadgeStyle": "count",
+    "notifBadgeColor": "red"
+  },
+  "wallpaperDir": "/home/nursayat/Pictures/Wallpapers",
+  "lockscreen": {
+    "fingerprintEnabled": true,
+    "attemptLimitEnabled": false,
+    "passwordMaxAttempts": 5,
+    "fingerprintMaxAttempts": 5,
+    "backgroundMode": "follow",
+    "customBackground": "",
+    "promptBackdropMode": "desktop"
+  },
+  "launcher": {
+    "position": "center",
+    "width": 600,
+    "itemCount": 6,
+    "terminalCommand": "kitty -e",
+    "smartRanking": true,
+    "searchProvider": "google"
+  },
+  "wallpaperTransition": {
+    "mode": "random",
+    "pool": [
+      "fade",
+      "wipe",
+      "circle",
+      "swipe",
+      "paint"
+    ],
+    "effects": {
+      "fade": {
+        "duration": 1000
+      },
+      "wipe": {
+        "duration": 1600,
+        "orientation": "random"
+      },
+      "circle": {
+        "duration": 1600,
+        "origin": "random"
+      },
+      "swipe": {
+        "duration": 1600,
+        "direction": "random"
+      },
+      "paint": {
+        "duration": 2400
+      }
+    }
+  },
+  "widgets": {
+    "hideBarInRedactor": false,
+    "showDistances": true
+  },
+  "osd": {
+    "horizontalPosition": 98,
+    "verticalPosition": 94,
+    "orientation": "vertical",
+    "showCapsLock": true,
+    "showNumLock": true,
+    "showAirplane": true,
+    "attachToBar": true
   }
 }
+

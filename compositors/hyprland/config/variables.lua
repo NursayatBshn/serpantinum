@@ -1,2 +1,5 @@
 mainMod = "SUPER"
 terminal = "kitty"
+fileManager = "dolphin"
+browser = "firefox"
+codeEditor = "bash -c 'command -v antigravity >/dev/null && exec antigravity; command -v vscodium >/dev/null && exec vscodium; exec code'"

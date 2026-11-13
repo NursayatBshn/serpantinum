@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import "../"
+import "../notifications"
 
 PanelWindow {
     id: dockWindow
@@ -48,6 +49,27 @@ PanelWindow {
         "maxElements": 7,
         "hoverScale": 120,
         "cascadeScale": false,
+        "hoverBulge": true,
+        "hoverBulgeHeight": 12,
+        "hoverBulgeWidth": 140,
+        "hoverBulgeSmoothness": 18,
+        "hoverStretchEdges": true,
+        "hoverEffectMode": "parabolic",
+        "cascadeRadius": 2,
+        "hoverLift": 5,
+        "hoverSpread": 10,
+        "hoverAnimDuration": 220,
+        "hoverTilt": false,
+        "hoverGlow": false,
+        "launchBounce": true,
+        "dockPadding": 8,
+        "itemSpacing": 8,
+        "iconRadius": 28,
+        "dockCornerRadius": -1,
+        "dockOpacity": -1,
+        "showNotifBadges": true,
+        "notifBadgeStyle": "count",
+        "notifBadgeColor": "red",
         "focusRunning": true,
         "showRunningIndicators": true,
         "showRunningApps": false,
@@ -255,6 +277,204 @@ PanelWindow {
         if (typeof val === "boolean") return val;
         if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
         return Boolean(val);
+    }
+
+    property bool dockHoverBulge: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverBulge !== undefined) val = rawDockSettings.hoverBulge;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverBulge"] !== undefined) val = Config.rawSettings["dock.hoverBulge"];
+        if (val === undefined || val === null) return true;
+        if (typeof val === "boolean") return val;
+        if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
+        return Boolean(val);
+    }
+
+    property int dockHoverBulgeHeight: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverBulgeHeight !== undefined) val = rawDockSettings.hoverBulgeHeight;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverBulgeHeight"] !== undefined) val = Config.rawSettings["dock.hoverBulgeHeight"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0) ? parsed : 12;
+    }
+
+    property int dockHoverBulgeWidth: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverBulgeWidth !== undefined) val = rawDockSettings.hoverBulgeWidth;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverBulgeWidth"] !== undefined) val = Config.rawSettings["dock.hoverBulgeWidth"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 40) ? parsed : 140;
+    }
+
+    property int dockHoverBulgeSmoothness: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverBulgeSmoothness !== undefined) val = rawDockSettings.hoverBulgeSmoothness;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverBulgeSmoothness"] !== undefined) val = Config.rawSettings["dock.hoverBulgeSmoothness"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0) ? parsed : 18;
+    }
+
+    property bool dockHoverStretchEdges: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverStretchEdges !== undefined) val = rawDockSettings.hoverStretchEdges;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverStretchEdges"] !== undefined) val = Config.rawSettings["dock.hoverStretchEdges"];
+        if (val === undefined || val === null) return true;
+        if (typeof val === "boolean") return val;
+        if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
+        return Boolean(val);
+    }
+
+    property string dockHoverEffectMode: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverEffectMode !== undefined) val = rawDockSettings.hoverEffectMode;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverEffectMode"] !== undefined) val = Config.rawSettings["dock.hoverEffectMode"];
+        if (typeof val === "string" && (val === "parabolic" || val === "wave" || val === "spring" || val === "flat")) return val;
+        return "parabolic";
+    }
+
+    property int dockCascadeRadius: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.cascadeRadius !== undefined) val = rawDockSettings.cascadeRadius;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.cascadeRadius"] !== undefined) val = Config.rawSettings["dock.cascadeRadius"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 1 && parsed <= 5) ? parsed : 2;
+    }
+
+    property int dockHoverLift: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverLift !== undefined) val = rawDockSettings.hoverLift;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverLift"] !== undefined) val = Config.rawSettings["dock.hoverLift"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0 && parsed <= 30) ? parsed : 5;
+    }
+
+    property int dockHoverSpread: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverSpread !== undefined) val = rawDockSettings.hoverSpread;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverSpread"] !== undefined) val = Config.rawSettings["dock.hoverSpread"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0 && parsed <= 30) ? parsed : 10;
+    }
+
+    property int dockHoverAnimDuration: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverAnimDuration !== undefined) val = rawDockSettings.hoverAnimDuration;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverAnimDuration"] !== undefined) val = Config.rawSettings["dock.hoverAnimDuration"];
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 60 && parsed <= 600) ? parsed : 220;
+    }
+
+    property bool dockHoverTilt: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverTilt !== undefined) val = rawDockSettings.hoverTilt;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverTilt"] !== undefined) val = Config.rawSettings["dock.hoverTilt"];
+        if (val === undefined || val === null) return false;
+        if (typeof val === "boolean") return val;
+        if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
+        return Boolean(val);
+    }
+
+    property bool dockHoverGlow: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.hoverGlow !== undefined) val = rawDockSettings.hoverGlow;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.hoverGlow"] !== undefined) val = Config.rawSettings["dock.hoverGlow"];
+        if (val === undefined || val === null) return false;
+        if (typeof val === "boolean") return val;
+        if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
+        return Boolean(val);
+    }
+
+    property bool dockLaunchBounce: {
+        let val = undefined;
+        if (rawDockSettings && rawDockSettings.launchBounce !== undefined) val = rawDockSettings.launchBounce;
+        else if (typeof Config !== "undefined" && Config.rawSettings && Config.rawSettings["dock.launchBounce"] !== undefined) val = Config.rawSettings["dock.launchBounce"];
+        if (val === undefined || val === null) return true;
+        if (typeof val === "boolean") return val;
+        if (typeof val === "string") return val.toLowerCase() === "true" || val === "1";
+        return Boolean(val);
+    }
+
+    property int notifRevision: 0
+
+    Connections {
+        target: (typeof NotificationManager !== "undefined" && NotificationManager.groupedHistory) ? NotificationManager.groupedHistory : null
+        ignoreUnknownSignals: true
+        function onCountChanged() { dockWindow.notifRevision++; }
+        function onDataChanged() { dockWindow.notifRevision++; }
+        function onRowsInserted() { dockWindow.notifRevision++; }
+        function onRowsRemoved() { dockWindow.notifRevision++; }
+    }
+
+    function _normAppKey(val) {
+        if (!val) return "";
+        return String(val).toLowerCase().replace(/\.desktop$/i, "").replace(/[^a-z0-9]/g, "");
+    }
+
+    function getUnreadNotifCount(desktopId, appName) {
+        let _rev = dockWindow.notifRevision;
+        if (!dockShowNotifBadges) return 0;
+        if (typeof NotificationManager === "undefined" || !NotificationManager.groupedHistory) return 0;
+        let k1 = _normAppKey(desktopId);
+        let k2 = _normAppKey(appName);
+        if (!k1 && !k2) return 0;
+        let total = 0;
+        let gh = NotificationManager.groupedHistory;
+        for (let i = 0; i < gh.count; i++) {
+            let entry = gh.get(i);
+            if (!entry || !(entry.unreadCount > 0)) continue;
+            let gk = _normAppKey(entry.groupKey);
+            let dn = _normAppKey(entry.displayName);
+            if ((k1 && (gk === k1 || dn === k1 || gk.indexOf(k1) !== -1 || k1.indexOf(gk) !== -1)) ||
+                (k2 && (gk === k2 || dn === k2 || dn.indexOf(k2) !== -1 || k2.indexOf(dn) !== -1))) {
+                total += entry.unreadCount;
+            }
+        }
+        return total;
+    }
+
+    property int dockPadding: {
+        let val = (rawDockSettings && rawDockSettings.dockPadding !== undefined) ? rawDockSettings.dockPadding : undefined;
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 2 && parsed <= 32) ? parsed : 8;
+    }
+
+    property int dockItemSpacing: {
+        let val = (rawDockSettings && rawDockSettings.itemSpacing !== undefined) ? rawDockSettings.itemSpacing : undefined;
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0 && parsed <= 28) ? parsed : 8;
+    }
+
+    property int dockIconRadius: {
+        let val = (rawDockSettings && rawDockSettings.iconRadius !== undefined) ? rawDockSettings.iconRadius : undefined;
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= 0 && parsed <= 50) ? parsed : 28;
+    }
+
+    property int dockCornerRadius: {
+        let val = (rawDockSettings && rawDockSettings.dockCornerRadius !== undefined) ? rawDockSettings.dockCornerRadius : undefined;
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= -1 && parsed <= 48) ? parsed : -1;
+    }
+
+    property int dockCustomOpacity: {
+        let val = (rawDockSettings && rawDockSettings.dockOpacity !== undefined) ? rawDockSettings.dockOpacity : undefined;
+        let parsed = parseInt(val);
+        return (!isNaN(parsed) && parsed >= -1 && parsed <= 100) ? parsed : -1;
+    }
+
+    property bool dockShowNotifBadges: {
+        let val = (rawDockSettings && rawDockSettings.showNotifBadges !== undefined) ? rawDockSettings.showNotifBadges : undefined;
+        if (val === undefined || val === null) return true;
+        return Boolean(val);
+    }
+
+    property string dockNotifBadgeStyle: {
+        let val = (rawDockSettings && rawDockSettings.notifBadgeStyle) ? String(rawDockSettings.notifBadgeStyle) : "count";
+        return (val === "dot") ? "dot" : "count";
+    }
+
+    property string dockNotifBadgeColor: {
+        let val = (rawDockSettings && rawDockSettings.notifBadgeColor) ? String(rawDockSettings.notifBadgeColor) : "red";
+        return (val === "accent") ? "accent" : "red";
     }
 
     property bool focusRunning: {

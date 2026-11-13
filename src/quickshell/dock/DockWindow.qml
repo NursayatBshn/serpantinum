@@ -68,7 +68,7 @@ DockWindowApps {
     property bool rawDockFloating: rawDockSettings.floating !== undefined ? rawDockSettings.floating : false
     property bool dockFloating: rawDockFloating || (sameSideAsBar && !isBarSolid)
     readonly property bool dockBackground: rawDockSettings.background !== undefined ? Boolean(rawDockSettings.background) : true
-    readonly property real dockOpacity: dockBackground ? ThemeBackend.elementOpacity : 0.0
+    readonly property real dockOpacity: !dockBackground ? 0.0 : (dockCustomOpacity >= 0 ? (dockCustomOpacity / 100.0) : ThemeBackend.elementOpacity)
     property real floatingMargin: dockFloating ? s(8) : 0
     Behavior on floatingMargin {
         enabled: dockWindowRoot.initialized && !dockWindowRoot.positionChanging

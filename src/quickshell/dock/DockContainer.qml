@@ -20,9 +20,10 @@ Item {
         }
     }
 
-    property real dynamicCornerRadius: (dockWindow.dockFloating || dockWindow.editMode)
-        ? ThemeBackend.borderRadius
-        : Math.max(0, Math.min(dockWindow.outerCornerRadius, (dockWindow.isVertical ? width : height) * 0.5))
+    property real dynamicCornerRadius: {
+        let baseR = (dockWindow.dockCornerRadius >= 0) ? dockWindow.s(dockWindow.dockCornerRadius) : ((dockWindow.dockFloating || dockWindow.editMode) ? ThemeBackend.borderRadius : dockWindow.outerCornerRadius);
+        return Math.max(0, Math.min(baseR, (dockWindow.isVertical ? width : height) * 0.5));
+    }
 
     readonly property real dockSideRadius: dynamicCornerRadius * (1.0 - outerCornerProgress)
     readonly property real topLeftCorner: (dockWindow.dockPosition === "top" || dockWindow.dockPosition === "left") ? dockSideRadius : dynamicCornerRadius
@@ -107,7 +108,7 @@ Item {
         }
     }
 
-    property real itemSpacing: dockWindow.editMode ? dockWindow.s(10) : dockWindow.s(8)
+    property real itemSpacing: dockWindow.editMode ? dockWindow.s(10) : dockWindow.s(dockWindow.dockItemSpacing)
     property real itemSize: dockWindow.s(dockWindow.dockElementSize)
     property real itemStep: itemSize + itemSpacing
 
@@ -134,8 +135,47 @@ Item {
     }
     property real dockThickness: itemSize
 
-    property real fullThickness: dockThickness + dockWindow.s(16)
-    property real fullContentLength: dockContentLength + dockWindow.s(20)
+    readonly property bool hoverScaleActive: hoveredItemIndex >= 0 && !dockWindow.editMode && dockWindow.dragSourceIndex === -1 && dockWindow.dockHoverScaleMultiplier > 1.0
+    readonly property real hoverDelta: Math.max(0.0, dockWindow.dockHoverScaleMultiplier - 1.0)
+    property int lastHoveredIndex: 0
+    onHoveredItemIndexChanged: {
+        if (hoveredItemIndex >= 0) lastHoveredIndex = hoveredItemIndex;
+    }
+
+    property real hoverBulgeProgress: hoverScaleActive ? 1.0 : 0.0
+    Behavior on hoverBulgeProgress {
+        enabled: dockWindow.initialized && !dockWindow.positionChanging
+        NumberAnimation { duration: dockWindow.dockHoverAnimDuration; easing.type: dockWindow.dockHoverEffectMode === "spring" ? Easing.OutBack : Easing.OutCubic; easing.overshoot: 1.25 }
+    }
+
+    readonly property real targetBulgeCenter: {
+        let idx = Math.max(0, lastHoveredIndex);
+        let pinned = dockWindow.dockAppsModel.count;
+        let offsetInLayout = 0;
+        if (idx < pinned) {
+            offsetInLayout = idx * itemStep + itemSize * 0.5;
+        } else {
+            offsetInLayout = pinned * itemStep + dockWindow.s(1) + itemSpacing + (idx - pinned - 1) * itemStep + itemSize * 0.5;
+        }
+        return (dockWindow.isVertical ? (dockViewport.y + dockLayout.y) : (dockViewport.x + dockLayout.x)) + offsetInLayout;
+    }
+
+    property real animatedBulgeCenter: targetBulgeCenter
+    Behavior on animatedBulgeCenter {
+        enabled: dockWindow.initialized && !dockWindow.positionChanging && hoverBulgeProgress > 0.01
+        NumberAnimation { duration: Math.max(80, Math.round(dockWindow.dockHoverAnimDuration * 0.65)); easing.type: Easing.OutCubic }
+    }
+
+    readonly property real hoverMaxShift: Math.min(dockWindow.s(dockWindow.dockHoverSpread), itemSize * hoverDelta * 0.65)
+    readonly property real hoverEdgeStretch: (hoverScaleActive && dockWindow.dockHoverStretchEdges) ? (2 * hoverMaxShift + hoverDelta * itemSize * 0.5) : 0
+    readonly property real bulgeOutset: dockWindow.dockHoverBulge ? ((hoverDelta * itemSize * 0.5 + dockWindow.s(dockWindow.dockHoverBulgeHeight)) * hoverBulgeProgress) : 0
+    readonly property real bulgeSpan: Math.min(
+        Math.max(itemSize, (dockWindow.isVertical ? containerRoot.height : containerRoot.width) - dockWindow.s(12)),
+        dockWindow.s(dockWindow.dockHoverBulgeWidth) + (dockWindow.dockCascadeScale ? itemSize * 0.45 : 0)
+    )
+
+    property real fullThickness: dockThickness + dockWindow.s(dockWindow.dockPadding * 2)
+    property real fullContentLength: dockContentLength + dockWindow.s(dockWindow.dockPadding * 2 + 4) + hoverEdgeStretch
 
     property real baseWidth: Math.round(dockWindow.isVertical ? fullThickness : fullContentLength)
     property real baseHeight: Math.round(dockWindow.isVertical ? fullContentLength : fullThickness)
@@ -239,8 +279,40 @@ Item {
         offset: Qt.point(containerRoot.x + dockTransform.x, containerRoot.y + dockTransform.y)
         visible: containerRoot.visible && containerRoot.width > 0 && containerRoot.height > 0
         color: ThemeBackend.liquidGlass ? "transparent" : Qt.alpha(ThemeBackend.base, dockWindow.dockOpacity)
-        rects: [{ x: 0, y: 0, w: containerRoot.width, h: containerRoot.height, r: [containerRoot.topLeftCorner, containerRoot.topRightCorner, containerRoot.bottomRightCorner, containerRoot.bottomLeftCorner] }]
-        filletRadius: containerRoot.isAttached && containerRoot.fanFillets ? dockWindow.outerCornerRadius * containerRoot.outerCornerProgress : 0
+        rects: {
+            let baseRect = {
+                x: 0, y: 0,
+                w: containerRoot.width, h: containerRoot.height,
+                r: [containerRoot.topLeftCorner, containerRoot.topRightCorner, containerRoot.bottomRightCorner, containerRoot.bottomLeftCorner]
+            };
+            if (containerRoot.bulgeOutset <= 0.5) return [baseRect];
+            let b = containerRoot.bulgeOutset;
+            let span = containerRoot.bulgeSpan;
+            let c = containerRoot.animatedBulgeCenter;
+            let overlap = dockWindow.s(36);
+            let depth = b + overlap;
+            let br = Math.min(span * 0.5, depth * 0.5);
+            let edgePad = dockWindow.s(6);
+            let bulgeRect;
+            if (dockWindow.dockPosition === "bottom") {
+                let bx = Math.max(edgePad, Math.min(containerRoot.width - span - edgePad, c - span * 0.5));
+                bulgeRect = { x: bx, y: -b, w: span, h: depth, r: [br, br, br, br] };
+            } else if (dockWindow.dockPosition === "top") {
+                let bx = Math.max(edgePad, Math.min(containerRoot.width - span - edgePad, c - span * 0.5));
+                bulgeRect = { x: bx, y: containerRoot.height - overlap, w: span, h: depth, r: [br, br, br, br] };
+            } else if (dockWindow.dockPosition === "left") {
+                let by = Math.max(edgePad, Math.min(containerRoot.height - span - edgePad, c - span * 0.5));
+                bulgeRect = { x: containerRoot.width - overlap, y: by, w: depth, h: span, r: [br, br, br, br] };
+            } else {
+                let by = Math.max(edgePad, Math.min(containerRoot.height - span - edgePad, c - span * 0.5));
+                bulgeRect = { x: -b, y: by, w: depth, h: span, r: [br, br, br, br] };
+            }
+            return [baseRect, bulgeRect];
+        }
+        filletRadius: {
+            let baseFillet = (containerRoot.isAttached && containerRoot.fanFillets) ? (dockWindow.outerCornerRadius * containerRoot.outerCornerProgress) : 0;
+            return containerRoot.bulgeOutset > 0.5 ? Math.max(baseFillet, dockWindow.s(dockWindow.dockHoverBulgeSmoothness) * containerRoot.hoverBulgeProgress) : baseFillet;
+        }
         attachTo: containerRoot.isAttached && dockWindow.sameSideAsBar ? ["bar"] : []
         publishShape: containerRoot.isAttached && dockWindow.sameSideAsBar
         edges: containerRoot.isAttached && !dockWindow.sameSideAsBar ? [dockWindow.dockPosition] : []
@@ -377,6 +449,7 @@ Item {
                         dockContainer: containerRoot
                     }
                 }
+
             }
         }
     }
