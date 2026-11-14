@@ -12,6 +12,9 @@ Item {
     required property var panel
     property alias nightLight: nightLightBtn
     property alias coffee: coffeeBtn
+    property alias warp: warpBtn
+    property alias phantom: phantomBtn
+    property alias record: recBtn
 
     component QuickActionBtn : Rectangle {
         id: qaBtn
@@ -95,15 +98,136 @@ Item {
     id: view
     z: 5
     Layout.fillWidth: true
-    Layout.preferredHeight: view.panel.s(73)
-    Layout.maximumHeight: view.panel.s(73)
+    Layout.preferredHeight: view.panel.s(146)
+    Layout.maximumHeight: view.panel.s(146)
     opacity: view.panel.introQuickActions
     transform: Translate { x: (view.panel.isLeftAnchored ? -view.panel.rowSlideDistance : view.panel.rowSlideDistance) * (1.0 - view.panel.introQuickActions) }
 
-    RowLayout {
-        anchors.fill: parent
-        spacing: view.panel.s(6)
+    Component.onCompleted: {
+        RecordingState.subscribe();
+        warpBtn.checkWarp();
+        phantomBtn.checkPhantom();
+    }
 
+    Component.onDestruction: {
+        RecordingState.unsubscribe();
+    }
+
+    Connections {
+        target: view.panel
+        function onVisibleChanged() {
+            if (view.panel.visible) {
+                warpBtn.checkWarp();
+                phantomBtn.checkPhantom();
+            }
+        }
+    }
+
+    // Process for Cloudflare WARP status
+    Process {
+        id: warpProc
+        command: ["bash", "-c", "warp-cli status 2>/dev/null | grep -i 'Status update: Connected' >/dev/null && echo 'ON' || echo 'OFF'"]
+        stdout: StdioCollector {
+            id: warpOut
+            onStreamFinished: {
+                let res = warpOut.text.trim();
+                warpBtn.isActive = (res === "ON");
+            }
+        }
+    }
+
+    Timer {
+        id: warpDelayTimer
+        interval: 800
+        repeat: false
+        onTriggered: warpBtn.checkWarp()
+    }
+
+    Timer {
+        id: warpPollTimer
+        interval: 3500
+        repeat: true
+        running: view.panel.visible
+        onTriggered: warpBtn.checkWarp()
+    }
+
+    // Process for PhantomPlayer status
+    Process {
+        id: phantomProc
+        command: ["bash", "-c", "if playerctl -l 2>/dev/null | grep -q PhantomPlayer || (test -f /tmp/phantomplayer.pid && kill -0 \"$(cat /tmp/phantomplayer.pid 2>/dev/null)\" 2>/dev/null); then echo 'ON'; else echo 'OFF'; fi"]
+        stdout: StdioCollector {
+            id: phantomOut
+            onStreamFinished: {
+                let res = phantomOut.text.trim();
+                phantomBtn.isActive = (res === "ON");
+            }
+        }
+    }
+
+    FileView {
+        path: "/tmp/phantomplayer.pid"
+        watchChanges: true
+        printErrors: false
+        onFileChanged: phantomBtn.checkPhantom()
+    }
+
+    Timer {
+        id: phantomDelayTimer
+        interval: 700
+        repeat: false
+        onTriggered: phantomBtn.checkPhantom()
+    }
+
+    Timer {
+        id: phantomPollTimer
+        interval: 3500
+        repeat: true
+        running: view.panel.visible
+        onTriggered: phantomBtn.checkPhantom()
+    }
+
+    GridLayout {
+        anchors.fill: parent
+        columns: 4
+        rows: 2
+        rowSpacing: view.panel.s(6)
+        columnSpacing: view.panel.s(6)
+
+        // ================= ROW 1 =================
+
+        // 1. Wi-Fi
+        QuickActionBtn {
+            iconText: isActive ? "󰤨" : "󰤮"
+            activeColor: ThemeBackend.blue
+            isActive: view.panel.wifiRadioEnabled
+            onLeftClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                Networking.wifiEnabled = !Networking.wifiEnabled;
+            }
+            onRightClicked: {
+                view.panel.closeAnim.start();
+                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "network", "wifi"]);
+            }
+        }
+
+        // 2. Bluetooth
+        QuickActionBtn {
+            iconText: isActive ? "󰂯" : "󰂲"
+            activeColor: ThemeBackend.mauve
+            isActive: view.panel.btRadioEnabled
+            onLeftClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                if (Bluetooth.defaultAdapter) {
+                    Bluetooth.defaultAdapter.enabled = !Bluetooth.defaultAdapter.enabled;
+                }
+            }
+            onRightClicked: {
+                view.panel.closeAnim.start();
+                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "network", "bt"]);
+            }
+        }
+
+        // 3. Night Light
         QuickActionBtn {
             id: nightLightBtn
             iconText: "󰖔"
@@ -129,84 +253,70 @@ Item {
             Component.onCompleted: updateState()
 
             Connections {
+                target: typeof Gamma !== "undefined" ? Gamma : null
+                enabled: true
+                ignoreUnknownSignals: true
+                function onStateChanged() {
+                    nightLightBtn.updateState();
+                }
+            }
+
+            Connections {
                 target: typeof Config !== "undefined" ? Config : null
-                enabled: view.panel.visible
+                enabled: true
                 ignoreUnknownSignals: true
                 function onSettingsLoaded() {
                     nightLightBtn.updateState();
                 }
             }
 
-            Connections {
-                target: typeof Gamma !== "undefined" ? Gamma : null
-                enabled: view.panel.visible
-                ignoreUnknownSignals: true
-                function onSettingsChanged() {
-                    nightLightBtn.updateState();
-                }
-            }
-
             onLeftClicked: {
                 Sounds.playSfx("system/quick_click.wav");
-                let target = !nightLightBtn.isActive;
-                nightLightBtn.isActive = target;
-
-                let monNames = [];
-                let ds = typeof Config !== "undefined" ? Config.getSetting("display", {"monitors": {}}) : {"monitors": {}};
-                let mons = (ds && ds.monitors) ? ds.monitors : {};
-                for (let m in mons) {
-                    if (monNames.indexOf(m) === -1) {
-                        monNames.push(m);
+                let shouldEnable = !isActive;
+                if (typeof Gamma !== "undefined" && typeof Gamma.setAllMonitorsEnabled === "function") {
+                    Gamma.setAllMonitorsEnabled(shouldEnable);
+                } else if (typeof Config !== "undefined") {
+                    let ds = Config.getSetting("display", {"monitors": {}});
+                    let mons = (ds && ds.monitors) ? ds.monitors : {};
+                    for (let mName in mons) {
+                        if (mons[mName]) mons[mName].enabled = shouldEnable;
                     }
+                    Config.setSetting("display", {"monitors": mons});
                 }
-                if (typeof Quickshell !== "undefined" && Quickshell.screens) {
-                    for (let i = 0; i < Quickshell.screens.length; i++) {
-                        let scr = Quickshell.screens[i];
-                        if (scr && scr.name && monNames.indexOf(scr.name) === -1) {
-                            monNames.push(scr.name);
-                        }
-                    }
-                }
-
-                if (monNames.length > 0) {
-                    for (let i = 0; i < monNames.length; i++) {
-                        Gamma.setEnabled(monNames[i], target);
-                    }
-                } else {
-                    Gamma.setEnabled("", target);
-                }
-                nightLightBtn.updateState();
+                updateState();
             }
 
             onRightClicked: {
                 view.panel.closeAnim.start();
-                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "settings", "display"]);
+                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "settings", "display:display_general"]);
             }
         }
 
+        // 4. Caffeine
         QuickActionBtn {
             id: coffeeBtn
-            activeColor: Qt.tint(ThemeBackend.peach, "#5c3016")
-
-            property double coffeeStartTime: 0
-            property double coffeeEndTime: 0
+            activeColor: ThemeBackend.sapphire
+            property real coffeeStartTime: 0
+            property real coffeeEndTime: 0
             property int remainingSeconds: 0
 
-            readonly property string remainingTimeString: {
-                if (isActive && coffeeEndTime <= 0) return "∞";
-                let secs = remainingSeconds;
-                if (secs <= 0) return "< 1m";
-                let h = Math.floor(secs / 3600);
-                let m = Math.floor((secs % 3600) / 60);
-                if (h > 0) {
-                    return h + "h " + (m < 10 ? "0" + m : m) + "m";
-                }
-                return Math.max(1, m) + "m";
+            iconText: {
+                if (!isActive) return "󰅶";
+                if (remainingSeconds <= 0) return "󰅶";
+                let mins = Math.ceil(remainingSeconds / 60);
+                if (mins < 60) return mins + "m";
+                let hrs = Math.floor(mins / 60);
+                let remMins = mins % 60;
+                return remMins > 0 ? hrs + "h" : hrs + "h";
             }
 
-            iconText: (isActive && isHovered) ? remainingTimeString : "󰅶"
-            customFontSize: (isActive && isHovered) ? view.panel.s(12) : 0
-            customFontFamily: (isActive && isHovered) ? ThemeBackend.fontFamily : ""
+            customFontSize: {
+                if (!isActive) return 0;
+                let t = iconText;
+                if (t.length >= 3) return view.panel.s(12);
+                if (t.length >= 2) return view.panel.s(14);
+                return 0;
+            }
 
             function updateRemaining() {
                 if (!isActive || coffeeEndTime <= 0) {
@@ -214,21 +324,19 @@ Item {
                     return;
                 }
                 let now = Date.now();
-                let diff = Math.round((coffeeEndTime - now) / 1000);
+                let diff = Math.max(0, Math.floor((coffeeEndTime - now) / 1000));
+                remainingSeconds = diff;
                 if (diff <= 0) {
-                    remainingSeconds = 0;
                     disableCaffeine();
-                } else {
-                    remainingSeconds = diff;
                 }
             }
 
-            function syncConfig(enabled) {
+            function syncConfig(enable) {
                 if (typeof Config === "undefined") return;
-                let idleObj = Object.assign({}, Config.getSetting("idle", {}));
-                idleObj.manualInhibit = enabled;
-                idleObj.caffeineStartTime = enabled ? coffeeStartTime : 0;
-                idleObj.caffeineEndTime = enabled ? coffeeEndTime : 0;
+                let idleObj = Config.getSetting("idle", {}) || {};
+                idleObj.manualInhibit = enable;
+                idleObj.caffeineStartTime = enable ? coffeeStartTime : 0;
+                idleObj.caffeineEndTime = enable ? coffeeEndTime : 0;
                 Config.setSetting("idle", idleObj);
             }
 
@@ -317,36 +425,84 @@ Item {
             }
         }
 
-        QuickActionBtn {
-            iconText: isActive ? "󰤨" : "󰤮"
-            activeColor: ThemeBackend.blue
-            isActive: view.panel.wifiRadioEnabled
-            onLeftClicked: {
-                Sounds.playSfx("system/quick_click.wav");
-                Networking.wifiEnabled = !Networking.wifiEnabled;
-            }
-            onRightClicked: {
-                view.panel.closeAnim.start();
-                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "network", "wifi"]);
-            }
-        }
+        // ================= ROW 2 =================
 
+        // 5. Cloudflare WARP
         QuickActionBtn {
-            iconText: isActive ? "󰂯" : "󰂲"
-            activeColor: ThemeBackend.mauve
-            isActive: view.panel.btRadioEnabled
+            id: warpBtn
+            iconText: "󰖂"
+            activeColor: "#f6821f" // Official Cloudflare Orange
+            isActive: false
+
+            function checkWarp() {
+                warpProc.running = false;
+                warpProc.running = true;
+            }
+
             onLeftClicked: {
                 Sounds.playSfx("system/quick_click.wav");
-                if (Bluetooth.defaultAdapter) {
-                    Bluetooth.defaultAdapter.enabled = !Bluetooth.defaultAdapter.enabled;
+                if (isActive) {
+                    isActive = false;
+                    Quickshell.execDetached(["warp-cli", "disconnect"]);
+                } else {
+                    isActive = true;
+                    Quickshell.execDetached(["warp-cli", "connect"]);
                 }
+                warpDelayTimer.restart();
             }
+
             onRightClicked: {
-                view.panel.closeAnim.start();
-                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/qs_manager.sh", "toggle", "network", "bt"]);
+                Sounds.playSfx("system/quick_click.wav");
+                checkWarp();
             }
         }
 
+        // 6. PhantomPlayer
+        QuickActionBtn {
+            id: phantomBtn
+            iconText: "󰥠"
+            activeColor: ThemeBackend.mauve
+            isActive: false
+
+            function checkPhantom() {
+                phantomProc.running = false;
+                phantomProc.running = true;
+            }
+
+            onLeftClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                Quickshell.execDetached(["/home/nursayat/Documents/MyProjects/PhantomPlayer/phantom-toggle.sh"]);
+                phantomDelayTimer.restart();
+            }
+
+            onRightClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                Quickshell.execDetached(["/home/nursayat/Documents/MyProjects/PhantomPlayer/phantom-trigger.sh"]);
+                phantomDelayTimer.restart();
+            }
+        }
+
+        // 7. Screen Recording
+        QuickActionBtn {
+            id: recBtn
+            iconText: RecordingState.isRecording ? "󰻃" : "󰹑"
+            activeColor: ThemeBackend.red
+            isActive: RecordingState.isRecording
+
+            onLeftClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                view.panel.closeAnim.start();
+                Quickshell.execDetached(["serpantinum", "screenshot", "--record"]);
+            }
+
+            onRightClicked: {
+                Sounds.playSfx("system/quick_click.wav");
+                view.panel.closeAnim.start();
+                Quickshell.execDetached(["serpantinum", "screenshot", "--record", "--full"]);
+            }
+        }
+
+        // 8. Airplane Mode
         QuickActionBtn {
             iconText: "󰀝"
             activeColor: ThemeBackend.red
