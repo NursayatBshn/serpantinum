@@ -367,7 +367,7 @@ if [ -z "$TARGET_MON" ]; then
     TARGET_MON=$(get_active_monitor)
 fi
 
-if [ "$SCAN_QR_MODE" = false ] && [ "$OCR_MODE" = false ] && [ "$RECORD_MODE" = false ] && [ "$FULL_MODE" = false ] && [ -z "$GEOMETRY" ]; then
+if [ "$SCAN_QR_MODE" = false ] && [ "$OCR_MODE" = false ] && [ "$FULL_MODE" = false ] && [ -z "$GEOMETRY" ]; then
     PREFS="$QS_STATE_SCREENSHOT/audio_prefs"
     if [ -f "$PREFS" ]; then
         IFS=',' read -r QS_DESK_VOL QS_DESK_MUTE QS_MIC_VOL QS_MIC_MUTE QS_MIC_DEV < "$PREFS"
@@ -382,6 +382,9 @@ if [ "$SCAN_QR_MODE" = false ] && [ "$OCR_MODE" = false ] && [ "$RECORD_MODE" = 
     [ -f "$CACHE_FILE" ] && QS_CACHED_GEOM=$(cat "$CACHE_FILE") || QS_CACHED_GEOM=""
     [ -f "$VIDEO_CACHE_FILE" ] && QS_CACHED_VIDEO_GEOM=$(cat "$VIDEO_CACHE_FILE") || QS_CACHED_VIDEO_GEOM=""
     [ -f "$MODE_CACHE_FILE" ] && QS_CACHED_MODE=$(cat "$MODE_CACHE_FILE") || QS_CACHED_MODE="false"
+    if [ "$RECORD_MODE" = true ]; then
+        QS_CACHED_MODE="true"
+    fi
     [ -f "$BACKEND_CACHE_FILE" ] && QS_CACHED_BACKEND=$(cat "$BACKEND_CACHE_FILE") || QS_CACHED_BACKEND="gpu-screen-recorder"
 
     if [ "$EDIT_MODE" = true ]; then

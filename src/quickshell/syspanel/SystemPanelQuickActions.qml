@@ -491,14 +491,22 @@ Item {
 
             onLeftClicked: {
                 Sounds.playSfx("system/quick_click.wav");
-                view.panel.closeAnim.start();
-                Quickshell.execDetached(["serpantinum", "screenshot", "--record"]);
+                if (RecordingState.isRecording) {
+                    Quickshell.execDetached(["serpantinum", "screenshot", "--record"]);
+                } else {
+                    view.panel.closeAnim.start();
+                    Quickshell.execDetached(["serpantinum", "screenshot", "--record"]);
+                }
             }
 
             onRightClicked: {
                 Sounds.playSfx("system/quick_click.wav");
-                view.panel.closeAnim.start();
-                Quickshell.execDetached(["serpantinum", "screenshot", "--record", "--full"]);
+                if (RecordingState.isRecording) {
+                    Quickshell.execDetached(["serpantinum", "screenshot", "--record"]);
+                } else {
+                    view.panel.closeAnim.start();
+                    Quickshell.execDetached(["serpantinum", "screenshot", "--record", "--full"]);
+                }
             }
         }
 
