@@ -134,7 +134,6 @@ function getKeybinds() {
             category: "apps",
             categoryName: "Приложения",
             categoryIcon: "󰀻",
-            title: "Поиск файлов Ski",
             desc: "Быстрый поиск файлов и дисков",
             keys: [["SUPER", "SHIFT", "E"]]
         },
