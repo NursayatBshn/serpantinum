@@ -172,6 +172,9 @@ show_ipc_help() {
 }
 
 ensure_daemon() {
+    if pgrep -x quickshell >/dev/null 2>&1; then
+        return 0
+    fi
     local pid=""
     if [ -f "/tmp/serpantinumd.pid" ]; then
         pid="$(cat "/tmp/serpantinumd.pid" 2>/dev/null)"
