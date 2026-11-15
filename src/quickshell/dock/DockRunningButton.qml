@@ -191,18 +191,33 @@ Item {
                 visible: source !== "" && status === Image.Ready && !failedLoad
 
                 source: {
-                    let ic = model.icon || "";
-                    if (!ic) return "";
-                    if (ic.startsWith("file://") || ic.startsWith("image://") || ic.startsWith("http://") || ic.startsWith("https://")) return ic;
-                    if (ic.startsWith("/")) return "file://" + ic;
-                    let baseName = ic.replace(/\.(png|svg|xpm|ico)$/i, "");
-                    if (typeof Quickshell !== "undefined" && typeof Quickshell.iconPath === "function") {
-                        let resolved = Quickshell.iconPath(ic) || Quickshell.iconPath(baseName);
-                        if (resolved && resolved.length > 0) {
-                            return resolved.startsWith("/") ? ("file://" + resolved) : resolved;
+                    let candidates = [];
+                    if (model.icon) candidates.push(model.icon);
+                    if (model.canonical_id && candidates.indexOf(model.canonical_id) === -1) candidates.push(model.canonical_id);
+                    if (model.desktop_id) {
+                        let didClean = String(model.desktop_id).replace(/\.(desktop)$/i, "");
+                        if (candidates.indexOf(didClean) === -1) candidates.push(didClean);
+                    }
+
+                    for (let i = 0; i < candidates.length; i++) {
+                        let c = candidates[i];
+                        if (!c) continue;
+                        if (c.startsWith("file://") || c.startsWith("image://") || c.startsWith("http://") || c.startsWith("https://")) return c;
+                        if (c.startsWith("/")) return "file://" + c;
+                        let base = c.replace(/\.(png|svg|xpm|ico)$/i, "");
+                        if (typeof Quickshell !== "undefined" && typeof Quickshell.iconPath === "function") {
+                            let resolved = Quickshell.iconPath(c) || Quickshell.iconPath(base);
+                            if (resolved && resolved.length > 0) {
+                                return resolved.startsWith("/") ? ("file://" + resolved) : resolved;
+                            }
                         }
                     }
-                    return "image://icon/" + baseName;
+
+                    if (candidates.length > 0) {
+                        let fallbackBase = candidates[0].replace(/\.(png|svg|xpm|ico)$/i, "");
+                        return "image://icon/" + fallbackBase;
+                    }
+                    return "";
                 }
                 onStatusChanged: {
                     if (status === Image.Error) failedLoad = true;
