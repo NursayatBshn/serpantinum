@@ -122,3 +122,6 @@ hl.bind("mouse:274", hl.dsp.exec_cmd("playerctl --player=PhantomPlayer stop"))
 hl.bind("CTRL + SHIFT + E", hl.dsp.exec_cmd("playerctl --player=PhantomPlayer stop"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("/home/nursayat/Documents/MyProjects/PhantomPlayer/phantom-toggle.sh"))
 hl.bind("CTRL + ALT + P", hl.dsp.exec_cmd("/home/nursayat/Documents/MyProjects/PhantomPlayer/phantom-toggle.sh"))
+
+-- Sober Roblox AutoClicker toggle
+hl.bind("F8", hl.dsp.exec_cmd("/home/nursayat/Documents/MyProjects/SoberAutoClicker/toggle.sh"))
