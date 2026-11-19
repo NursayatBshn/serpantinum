@@ -343,7 +343,7 @@ Item {
             function enableCaffeine(durationMs) {
                 let now = Date.now();
                 coffeeStartTime = now;
-                coffeeEndTime = now + durationMs;
+                coffeeEndTime = durationMs > 0 ? now + durationMs : 0;
                 isActive = true;
                 updateRemaining();
                 syncConfig(true);
@@ -415,7 +415,7 @@ Item {
                 if (isActive) {
                     disableCaffeine();
                 } else {
-                    enableCaffeine(3600 * 1000);
+                    enableCaffeine(0);
                 }
             }
 
