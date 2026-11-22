@@ -443,6 +443,7 @@ Item {
 
                     // Keybinds Scrollable Grid
                     ScrollView {
+                        id: keybindsScroll
                         anchors.fill: parent
                         clip: true
                         visible: window.currentItems.length > 0
@@ -450,7 +451,8 @@ Item {
                         ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
                         GridLayout {
-                            width: parent.width
+                            id: keybindsGrid
+                            width: keybindsScroll.availableWidth
                             columns: 2
                             columnSpacing: window.s(12)
                             rowSpacing: window.s(10)
@@ -460,6 +462,7 @@ Item {
 
                                 Rectangle {
                                     Layout.fillWidth: true
+                                    Layout.preferredWidth: (keybindsGrid.width - keybindsGrid.columnSpacing) / 2
                                     implicitHeight: cardContent.implicitHeight + window.s(18)
                                     radius: window.s(10)
                                     color: cardHover.containsMouse 
@@ -489,6 +492,7 @@ Item {
                                             spacing: window.s(3)
 
                                             RowLayout {
+                                                Layout.fillWidth: true
                                                 spacing: window.s(6)
                                                 Text {
                                                     text: modelData.categoryIcon
@@ -496,6 +500,7 @@ Item {
                                                     font.pixelSize: window.s(12)
                                                 }
                                                 Text {
+                                                    Layout.fillWidth: true
                                                     text: modelData.title
                                                     color: ThemeBackend.text
                                                     font.family: ThemeBackend.fontFamily
@@ -534,6 +539,7 @@ Item {
                                                     }
 
                                                     Repeater {
+                                                        id: innerKeyRepeater
                                                         model: modelData
 
                                                         RowLayout {
@@ -544,7 +550,7 @@ Item {
                                                             }
 
                                                             Text {
-                                                                visible: index < (parent.parent.model.length - 1)
+                                                                visible: index < (innerKeyRepeater.count - 1)
                                                                 text: "+"
                                                                 color: ThemeBackend.subtext1
                                                                 font.family: ThemeBackend.fontFamily

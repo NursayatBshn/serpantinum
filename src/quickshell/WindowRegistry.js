@@ -132,7 +132,7 @@ function getLayout(name, mx, my, mw, mh, userScale, barPosition) {
             } 
         },
         "cheatsheet": { 
-            w: 980, h: 680, comp: "cheatsheet/CheatsheetPopup.qml", 
+            w: 1040, h: 700, comp: "cheatsheet/CheatsheetPopup.qml", 
             pos: { 
                 "top": { anchor: "center" }, 
                 "bottom": { anchor: "center" }, 

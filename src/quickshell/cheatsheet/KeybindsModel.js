@@ -120,7 +120,7 @@ function getKeybinds() {
             categoryIcon: "󰀻",
             title: "Терминал Kitty",
             desc: "Быстрый запуск основного терминала окружения",
-            keys: [["SUPER", "Enter"], ["SUPER", "T"], ["CTRL", "ALT", "T"]]
+            keys: [["SUPER", "Enter"], ["SUPER", "T"]]
         },
         {
             category: "apps",
@@ -134,16 +134,17 @@ function getKeybinds() {
             category: "apps",
             categoryName: "Приложения",
             categoryIcon: "󰀻",
-            desc: "Быстрый поиск файлов и дисков",
-            keys: [["SUPER", "SHIFT", "E"]]
+            title: "Браузер Firefox",
+            desc: "Запуск основного интернет-браузера",
+            keys: [["SUPER", "W"]]
         },
         {
             category: "apps",
             categoryName: "Приложения",
             categoryIcon: "󰀻",
-            title: "Браузер Firefox",
-            desc: "Запуск основного интернет-браузера",
-            keys: [["SUPER", "W"]]
+            title: "Автокликер (Sober Roblox)",
+            desc: "Включить или выключить автокликер",
+            keys: [["F8"]]
         },
         {
             category: "apps",
