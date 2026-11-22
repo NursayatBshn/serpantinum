@@ -25,6 +25,14 @@ Item {
 
     property var exitCallback: null
 
+    function closeWindow() {
+        if (typeof masterWindow !== "undefined" && masterWindow.switchWidget) {
+            masterWindow.switchWidget("hidden", "");
+        } else if (typeof Quickshell !== "undefined" && Quickshell.execDetached) {
+            Quickshell.execDetached(["serpantinum", "msg", "close"]);
+        }
+    }
+
     function startExit(onFinished) {
         introAnim.stop();
         exitCallback = onFinished;
@@ -77,6 +85,12 @@ Item {
         sequence: "Ctrl+F"
         enabled: window.visible
         onActivated: searchInput.forceActiveFocus()
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        enabled: window.visible
+        onActivated: window.closeWindow()
     }
 
     Shortcut {
@@ -337,7 +351,7 @@ Item {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: Quickshell.exec(["serpantinum", "msg", "close"])
+                            onClicked: window.closeWindow()
                         }
                     }
                 }
